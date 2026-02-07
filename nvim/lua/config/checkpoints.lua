@@ -7,11 +7,13 @@ local hl_group = "CheckpointSign"
 vim.api.nvim_set_hl(0, hl_group, { link = "DiagnosticInfo", default = true })
 vim.fn.sign_define(sign_name, { text = "●", texthl = hl_group, numhl = "" })
 
+local buffer_state = {}
+
 local function get_state(bufnr)
-  local state = vim.b[bufnr].checkpoints
+  local state = buffer_state[bufnr]
   if not state then
     state = { lines = {}, next_id = 1 }
-    vim.b[bufnr].checkpoints = state
+    buffer_state[bufnr] = state
   end
   return state
 end
@@ -63,7 +65,7 @@ end
 function M.clear()
   local bufnr = vim.api.nvim_get_current_buf()
   vim.fn.sign_unplace(sign_group, { buffer = bufnr })
-  vim.b[bufnr].checkpoints = { lines = {}, next_id = 1 }
+  buffer_state[bufnr] = { lines = {}, next_id = 1 }
 end
 
 return M
