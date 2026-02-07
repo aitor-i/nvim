@@ -14,6 +14,9 @@ vim.keymap.set("n", "r", "<cmd>lua vim.diagnostic.goto_next()<CR>")
 vim.keymap.set("n", "R", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 vim.keymap.set("n", "<leader>gb", "<cmd>GitBlameToggle<CR>")
 vim.keymap.set("n", "<leader>on", "<cmd>ProjectNotes<CR>")
+vim.keymap.set("n", "<leader>ct", function() require("config.checkpoints").toggle() end)
+vim.keymap.set("n", "<leader>cn", function() require("config.checkpoints").next() end)
+vim.keymap.set("n", "<leader>cC", function() require("config.checkpoints").clear() end)
 
 function _G.find_all_files()
   require("telescope.builtin").find_files({
