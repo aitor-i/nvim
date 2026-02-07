@@ -14,13 +14,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "typescript", "typescriptreact" },
-  callback = function()
-    vim.cmd("TSDisable highlight")
-  end,
-})
-
 vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function()
     vim.lsp.buf.format({ async = false })
