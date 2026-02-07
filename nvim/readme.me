@@ -1,0 +1,78 @@
+# Neovim Configuration
+
+This repository contains a curated Neovim configuration that sets up LSP, completion, linting, formatting, and developer UX plugins through Lazy.nvim.
+
+## Features
+
+- Lazy-managed plugin setup.
+- Mason + mason-lspconfig for LSP server management.
+- nvim-cmp with LuaSnip for completion and snippets.
+- Treesitter syntax highlighting.
+- Telescope, Harpoon, UndoTree, LazyGit, and more.
+
+## Requirements
+
+### Linux
+
+- Neovim 0.9+ (recommended 0.10+).
+- Git.
+- Node.js + npm (for TypeScript/JavaScript tooling and some LSP servers).
+- Optional: Python 3 (for some tooling), ripgrep (for Telescope search).
+
+### macOS
+
+- Neovim 0.9+ (recommended 0.10+).
+- Git.
+- Node.js + npm.
+- Optional: Python 3, ripgrep.
+
+## Installation
+
+1. Back up any existing Neovim config:
+
+   ```bash
+   mv ~/.config/nvim ~/.config/nvim.bak
+   ```
+
+2. Clone this repo into `~/.config/nvim`:
+
+   ```bash
+   git clone <your-repo-url> ~/.config/nvim
+   ```
+
+3. Start Neovim:
+
+   ```bash
+   nvim
+   ```
+
+4. Lazy.nvim will bootstrap and install plugins on first launch.
+
+## LSP and Mason Behavior
+
+- Mason automatically installs LSP servers defined in the config.
+- The TypeScript LSP server is configured with `ts_ls` (the current `nvim-lspconfig` name).
+- If you see warnings about missing servers, open Neovim and run:
+
+  ```vim
+  :Mason
+  ```
+
+  to confirm they are installed.
+
+## Completion Behavior
+
+- nvim-cmp is configured for LSP and snippet completion.
+- Use `<Tab>` and `<Shift-Tab>` to cycle forward/backward through completion suggestions.
+- LuaSnip expansion is integrated with `<Tab>` for snippet jump/expand.
+
+## Notes
+
+- `:checkhealth` can help diagnose missing dependencies.
+- `:checkhealth which-key` can highlight conflicting keymaps.
+
+## Repo Layout
+
+- `init.lua` — main entry point.
+- `lua/plugins/init.lua` — plugin declarations and configuration.
+- `lua/config/` — LSP, Mason, options, keymaps, and other config modules.
