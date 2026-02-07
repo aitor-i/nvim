@@ -22,8 +22,14 @@ wk.register({
   },
   f = { "<cmd>lua require('telescope.builtin').git_files({ show_untracked = true })<CR>", "Find Git Files" },
   F = { "<cmd>lua find_all_files()<CR>", "Find All Files" },
-  c = { f = { "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<CR>", "Format File" } },
-  g = { g = { "<cmd>LazyGit<CR>" } },
+  c = {
+    name = "+Code",
+    f = { "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<CR>", "Format File" },
+  },
+  g = {
+    name = "+Git",
+    g = { "<cmd>LazyGit<CR>", "LazyGit" },
+  },
   gb = { "<cmd>GitBlameToggle<CR>", "Toggle Git Blame" },
   z = { "<C-w>w", "Next Window" },
   k = { "<cmd>CommentToggle<CR>", "Toggle Comment" },
