@@ -30,6 +30,10 @@ wk.register({
     name = "+Git",
     g = { "<cmd>LazyGit<CR>", "LazyGit" },
   },
+  o = {
+    name = "+Open",
+    n = { "<cmd>ProjectNotes<CR>", "Project Notes" },
+  },
   gb = { "<cmd>GitBlameToggle<CR>", "Toggle Git Blame" },
   z = { "<C-w>w", "Next Window" },
   k = { "<cmd>CommentToggle<CR>", "Toggle Comment" },
