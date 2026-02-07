@@ -205,6 +205,7 @@ Use this section as the "map" to every configurable area in the repo. Each bulle
 
 - `:checkhealth` can help diagnose missing dependencies.
 - `:checkhealth which-key` can highlight conflicting keymaps.
+- `:ProjectNotes` (or `<leader>on`) opens a per-project notes file at `.project-notes.md` in the project root.
 
 ## Repo Layout
 
