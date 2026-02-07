@@ -1,6 +1,6 @@
 vim.keymap.set("n", "<leader>w", ":w<CR>")
 vim.keymap.set("n", "<leader>pv", "<cmd>Ex<CR>")
-vim.keymap.set("n", "<leader>f", "<cmd>lua require('telescope.builtin').find_files()<CR>")
+vim.keymap.set("n", "<leader>f", "<cmd>lua require('telescope.builtin').git_files({ show_untracked = true })<CR>")
 vim.keymap.set("n", "<leader>x", "/")
 vim.keymap.set("n", "<leader>sn", "]s")
 vim.keymap.set("n", "<leader>sp", "[s")
