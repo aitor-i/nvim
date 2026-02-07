@@ -25,6 +25,9 @@ wk.register({
   c = {
     name = "+Code",
     f = { "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<CR>", "Format File" },
+    t = { "<cmd>lua require('config.checkpoints').toggle()<CR>", "Toggle Checkpoint" },
+    n = { "<cmd>lua require('config.checkpoints').next()<CR>", "Next Checkpoint" },
+    C = { "<cmd>lua require('config.checkpoints').clear()<CR>", "Clear Checkpoints" },
   },
   g = {
     name = "+Git",
