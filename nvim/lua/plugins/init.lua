@@ -12,7 +12,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  { "LunarVim/lunar.nvim", priority = 1000, config = function() vim.cmd.colorscheme("lunar") end },
+  { "LunarVim/lunar.nvim", priority = 1000 },
+  { "folke/tokyonight.nvim", priority = 1000 },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  { "rebelot/kanagawa.nvim", priority = 1000 },
+  { "EdenEast/nightfox.nvim", priority = 1000 },
+  { "ellisonleao/gruvbox.nvim", priority = 1000 },
   { "nvim-lua/plenary.nvim" },
   { "nvim-tree/nvim-web-devicons" },
   {
