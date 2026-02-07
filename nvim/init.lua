@@ -2,15 +2,14 @@
 
 -- leader key (must be first)
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- basic settings
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.termguicolors = true
-vim.opt.clipboard = "unnamedplus"
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
 
--- simple keymap example
-vim.keymap.set("n", "<leader>w", ":w<CR>")
+require("plugins")
+
+require("config.snippets")
+require("config.lsp")
+require("config.which_key")
