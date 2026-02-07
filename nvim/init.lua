@@ -10,6 +10,7 @@ require("config.autocmds")
 
 require("plugins")
 
+require("config.colorscheme")
 require("config.snippets")
 require("config.mason")
 require("config.lsp")
