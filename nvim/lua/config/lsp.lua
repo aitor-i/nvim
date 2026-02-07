@@ -2,6 +2,22 @@ local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 local capabilities = cmp_nvim_lsp.default_capabilities()
+local border = "rounded"
+
+vim.diagnostic.config({
+  float = { border = border, source = "always" },
+  severity_sort = true,
+  update_in_insert = false,
+  underline = true,
+})
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = border,
+})
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  border = border,
+})
 
 lspconfig.intelephense.setup({
   capabilities = capabilities,
