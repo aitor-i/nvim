@@ -18,6 +18,6 @@ conform.setup({
   },
 })
 
-vim.keymap.set("n", "<leader>f", function()
+vim.keymap.set("n", "<leader>cf", function()
   conform.format({ async = true, lsp_fallback = true })
 end, { desc = "Format file" })
