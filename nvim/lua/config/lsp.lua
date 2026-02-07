@@ -26,7 +26,7 @@ lspconfig.omnisharp.setup({
   capabilities = capabilities,
 })
 
-lspconfig.tsserver.setup({
+lspconfig.ts_ls.setup({
   capabilities = capabilities,
   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 })

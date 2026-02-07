@@ -12,7 +12,7 @@ mason_lspconfig.setup({
     "jsonls",
     "lua_ls",
     "tailwindcss",
-    "tsserver",
+    "ts_ls",
   },
 })
 
