@@ -55,20 +55,17 @@ require("lazy").setup({
     end,
   },
   { "mbbill/undotree" },
+  { "williamboman/mason.nvim", config = function() require("mason").setup({}) end },
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.formatting.prettier.with({
-            filetypes = { "typescript", "typescriptreact" },
-          }),
-        },
-      })
-    end,
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
   },
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+  },
+  { "stevearc/conform.nvim" },
+  { "mfussenegger/nvim-lint" },
   { "jparise/vim-graphql" },
   { "kdheepak/lazygit.nvim" },
   {

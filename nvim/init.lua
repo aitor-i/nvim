@@ -11,5 +11,8 @@ require("config.autocmds")
 require("plugins")
 
 require("config.snippets")
+require("config.mason")
 require("config.lsp")
+require("config.formatting")
+require("config.lint")
 require("config.which_key")
