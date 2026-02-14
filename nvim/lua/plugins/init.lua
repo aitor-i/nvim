@@ -121,10 +121,19 @@ require("lazy").setup({
       "hrsh7th/cmp-nvim-lsp",
       "saadparwaiz1/cmp_luasnip",
       "L3MON4D3/LuaSnip",
+      "windwp/nvim-autopairs",
     },
     config = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+
+      require("nvim-autopairs").setup({
+        check_ts = true,
+      })
+
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+
       cmp.setup({
         snippet = {
           expand = function(args)
@@ -140,6 +149,8 @@ require("lazy").setup({
           }),
         },
         mapping = cmp.mapping.preset.insert({
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-@>"] = cmp.mapping.complete(),
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
