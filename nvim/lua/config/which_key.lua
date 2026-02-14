@@ -36,6 +36,7 @@ wk.register({
   o = {
     name = "+Open",
     n = { "<cmd>ProjectNotes<CR>", "Project Notes" },
+    t = { "<cmd>ProjectTerminalToggle<CR>", "Project Terminal" },
   },
   gb = { "<cmd>GitBlameToggle<CR>", "Toggle Git Blame" },
   z = { "<C-w>w", "Next Window" },
