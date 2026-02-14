@@ -206,6 +206,9 @@ Use this section as the "map" to every configurable area in the repo. Each bulle
 - `:checkhealth` can help diagnose missing dependencies.
 - `:checkhealth which-key` can highlight conflicting keymaps.
 - `:ProjectNotes` (or `<leader>on`) opens a per-project notes file stored under `stdpath("data")/project-notes` in a floating window.
+- `:ProjectTerminalToggle` (or `<leader>ot`) toggles a floating terminal panel for running shell commands.
+- `:ProjectTerminalOpen` and `:ProjectTerminalClose` explicitly open/close the same terminal panel; close hides the window and keeps the job running.
+- `:ProjectTerminalKill` stops the running terminal job.
 
 ## Repo Layout
 
