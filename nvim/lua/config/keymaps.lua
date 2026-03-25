@@ -1,4 +1,4 @@
-local function lsp_hover_with_feedback()
+function _G.lsp_hover_with_feedback()
   local bufnr = vim.api.nvim_get_current_buf()
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
 
@@ -20,7 +20,29 @@ local function lsp_hover_with_feedback()
     return
   end
 
-  vim.lsp.buf.hover()
+  local params = vim.lsp.util.make_position_params(0, "utf-16")
+  vim.lsp.buf_request(bufnr, "textDocument/hover", params, function(err, result, ctx, config)
+    if err then
+      vim.notify("Hover request failed: " .. (err.message or "unknown error"), vim.log.levels.WARN)
+      return
+    end
+
+    if not (result and result.contents) then
+      vim.notify("No hover documentation available at this position", vim.log.levels.INFO)
+      return
+    end
+
+    local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+    markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+
+    if vim.tbl_isempty(markdown_lines) then
+      vim.notify("No hover documentation available at this position", vim.log.levels.INFO)
+      return
+    end
+
+    local hover_config = vim.tbl_deep_extend("force", config or {}, { border = "rounded" })
+    vim.lsp.util.open_floating_preview(markdown_lines, "markdown", hover_config)
+  end)
 end
 
 vim.keymap.set("n", "<leader>w", ":w<CR>")
@@ -29,8 +51,8 @@ vim.keymap.set("n", "<leader>f", "<cmd>lua require('telescope.builtin').git_file
 vim.keymap.set("n", "<leader>x", "/")
 vim.keymap.set("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
 vim.keymap.set("n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-vim.keymap.set("n", "K", lsp_hover_with_feedback, { desc = "LSP Hover" })
-vim.keymap.set("n", "<leader>ch", lsp_hover_with_feedback, { desc = "LSP Hover Documentation" })
+vim.keymap.set("n", "K", _G.lsp_hover_with_feedback, { desc = "LSP Hover" })
+vim.keymap.set("n", "<leader>ch", _G.lsp_hover_with_feedback, { desc = "LSP Hover Documentation" })
 vim.keymap.set("n", "<leader>ci", vim.lsp.buf.type_definition, { desc = "LSP Type Definition" })
 vim.keymap.set("n", "<leader>sn", "]s")
 vim.keymap.set("n", "<leader>sp", "[s")
