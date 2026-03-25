@@ -18,6 +18,7 @@ wk.add({
   { "<leader>F", "<cmd>lua find_all_files()<CR>", desc = "Find All Files" },
   { "<leader>c", group = "Code" },
   { "<leader>cf", "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<CR>", desc = "Format File" },
+  { "<leader>ch", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Hover Documentation" },
   { "<leader>ct", "<cmd>lua require('config.checkpoints').toggle()<CR>", desc = "Toggle Checkpoint" },
   { "<leader>cn", "<cmd>lua require('config.checkpoints').next()<CR>", desc = "Next Checkpoint" },
   { "<leader>cC", "<cmd>lua require('config.checkpoints').clear()<CR>", desc = "Clear Checkpoints" },
