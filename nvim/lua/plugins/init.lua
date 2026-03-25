@@ -151,6 +151,7 @@ require("lazy").setup({
         mapping = cmp.mapping.preset.insert({
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-@>"] = cmp.mapping.complete(),
+          ["<C-2>"] = cmp.mapping.complete(),
           ["<CR>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.confirm({ select = true })
