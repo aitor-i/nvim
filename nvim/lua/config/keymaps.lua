@@ -1,11 +1,37 @@
+local function lsp_hover_with_feedback()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+  if #clients == 0 then
+    vim.notify("No LSP client attached to this buffer", vim.log.levels.WARN)
+    return
+  end
+
+  local supports_hover = false
+  for _, client in ipairs(clients) do
+    if client:supports_method("textDocument/hover") then
+      supports_hover = true
+      break
+    end
+  end
+
+  if not supports_hover then
+    vim.notify("Attached LSP clients do not support hover", vim.log.levels.WARN)
+    return
+  end
+
+  vim.lsp.buf.hover()
+end
+
 vim.keymap.set("n", "<leader>w", ":w<CR>")
 vim.keymap.set("n", "<leader>pv", "<cmd>Ex<CR>")
 vim.keymap.set("n", "<leader>f", "<cmd>lua require('telescope.builtin').git_files({ show_untracked = true })<CR>")
 vim.keymap.set("n", "<leader>x", "/")
 vim.keymap.set("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
 vim.keymap.set("n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-vim.keymap.set("n", "<leader>ch", "<cmd>lua vim.lsp.buf.hover()<CR>")
+vim.keymap.set("n", "K", lsp_hover_with_feedback, { desc = "LSP Hover" })
+vim.keymap.set("n", "<leader>ch", lsp_hover_with_feedback, { desc = "LSP Hover Documentation" })
+vim.keymap.set("n", "<leader>ci", vim.lsp.buf.type_definition, { desc = "LSP Type Definition" })
 vim.keymap.set("n", "<leader>sn", "]s")
 vim.keymap.set("n", "<leader>sp", "[s")
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<CR>")
