@@ -37,9 +37,26 @@ local function open_floating_notes(notes_path)
   })
 
   vim.api.nvim_set_option_value("wrap", true, { win = win })
+
+  return win
+end
+
+local notes_window_id = nil
+
+local function close_notes_window()
+  if notes_window_id and vim.api.nvim_win_is_valid(notes_window_id) then
+    vim.api.nvim_win_close(notes_window_id, true)
+  end
+
+  notes_window_id = nil
 end
 
 local function open_project_notes()
+  if notes_window_id and vim.api.nvim_win_is_valid(notes_window_id) then
+    close_notes_window()
+    return
+  end
+
   local root = get_project_root()
   local notes_path = get_notes_path(root)
 
@@ -48,7 +65,7 @@ local function open_project_notes()
     vim.fn.writefile({ "# Project Notes", "", "" }, notes_path)
   end
 
-  open_floating_notes(notes_path)
+  notes_window_id = open_floating_notes(notes_path)
 end
 
 vim.api.nvim_create_user_command("ProjectNotes", open_project_notes, {
