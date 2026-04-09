@@ -93,46 +93,110 @@ vim.keymap.set("i", "<C-b>", "v:lua.supermaven_accept_suggestion()", { expr = tr
 vim.keymap.set("i", "<C-l>", 'supermaven#Accept("<C-l>")', { expr = true, noremap = true })
 vim.keymap.set("i", "<C-h>", "supermaven#Dismiss()", { expr = true, noremap = true })
 
-vim.api.nvim_create_user_command("CommentToggle", function()
-  local cs = vim.bo.commentstring:gsub("%%s", ""):gsub(" ", "")
+local function escape_lua_pattern(text)
+  return (text:gsub("([^%w])", "%%%1"))
+end
 
-  if vim.fn.mode() == "n" then
-    local line = vim.api.nvim_get_current_line()
-    if vim.startswith(line, cs) then
-      vim.api.nvim_set_current_line(line:sub(#cs + 1))
-    else
-      vim.api.nvim_set_current_line(cs .. line)
-    end
-  elseif vim.fn.mode() == "V" or vim.fn.mode() == "v" or vim.fn.mode() == "" then
-    vim.cmd("normal! `<v`>y")
-    local lines = vim.fn.split(vim.fn.getreg('"'), "\n")
-
-    local all_commented = true
-    for _, line in ipairs(lines) do
-      if not vim.startswith(line, cs) then
-        all_commented = false
-        break
-      end
-    end
-
-    local new_lines = {}
-    for _, line in ipairs(lines) do
-      if all_commented then
-        table.insert(new_lines, line:sub(#cs + 1))
-      else
-        table.insert(new_lines, cs .. line)
-      end
-    end
-
-    local start_pos = vim.fn.getpos("'<")
-    local end_pos = vim.fn.getpos("'>")
-    local start_line = start_pos[2] - 1
-    local end_line = end_pos[2] - (all_commented and 1 or 0)
-
-    vim.api.nvim_buf_set_lines(0, start_line, end_line, false, new_lines)
-    vim.cmd(start_line + 1 .. "," .. end_line .. "normal! gv")
+local function get_comment_parts()
+  local commentstring = vim.bo.commentstring
+  if not commentstring or commentstring == "" or not commentstring:find("%%s") then
+    return nil, nil
   end
-end, {})
+
+  local prefix, suffix = commentstring:match("^(.*)%%s(.*)$")
+  return vim.trim(prefix or ""), vim.trim(suffix or "")
+end
+
+local function is_line_commented(line, prefix, suffix)
+  if line:match("^%s*$") then
+    return true
+  end
+
+  local prefix_pattern = "^%s*" .. escape_lua_pattern(prefix) .. "%s?"
+  if suffix ~= "" then
+    local suffix_pattern = "%s*" .. escape_lua_pattern(suffix) .. "%s*$"
+    return line:match(prefix_pattern .. ".-" .. suffix_pattern) ~= nil
+  end
+  return line:match(prefix_pattern) ~= nil
+end
+
+local function uncomment_line(line, prefix, suffix)
+  local indent, body = line:match("^(%s*)(.*)$")
+  if not indent or not body then
+    return line
+  end
+
+  if suffix ~= "" then
+    local pattern = "^" .. escape_lua_pattern(prefix) .. "%s?(.-)%s*" .. escape_lua_pattern(suffix) .. "%s*$"
+    local stripped = body:match(pattern)
+    if stripped ~= nil then
+      return indent .. stripped
+    end
+    return line
+  end
+
+  local pattern = "^" .. escape_lua_pattern(prefix) .. "%s?(.*)$"
+  local stripped = body:match(pattern)
+  if stripped ~= nil then
+    return indent .. stripped
+  end
+
+  return line
+end
+
+local function comment_line(line, prefix, suffix)
+  local indent, body = line:match("^(%s*)(.*)$")
+  if not indent or not body then
+    return line
+  end
+
+  if suffix ~= "" then
+    if body == "" then
+      return indent .. prefix .. " " .. suffix
+    end
+    return indent .. prefix .. " " .. body .. " " .. suffix
+  end
+
+  if body == "" then
+    return indent .. prefix
+  end
+
+  return indent .. prefix .. " " .. body
+end
+
+vim.api.nvim_create_user_command("CommentToggle", function(opts)
+  local prefix, suffix = get_comment_parts()
+  if not prefix or prefix == "" then
+    vim.notify("commentstring is not configured for this buffer", vim.log.levels.WARN)
+    return
+  end
+
+  local start_line = opts.line1 - 1
+  local end_line = opts.line2
+  local lines = vim.api.nvim_buf_get_lines(0, start_line, end_line, false)
+  if #lines == 0 then
+    return
+  end
+
+  local all_commented = true
+  for _, line in ipairs(lines) do
+    if not is_line_commented(line, prefix, suffix) then
+      all_commented = false
+      break
+    end
+  end
+
+  local updated_lines = {}
+  for _, line in ipairs(lines) do
+    if all_commented then
+      table.insert(updated_lines, uncomment_line(line, prefix, suffix))
+    else
+      table.insert(updated_lines, comment_line(line, prefix, suffix))
+    end
+  end
+
+  vim.api.nvim_buf_set_lines(0, start_line, end_line, false, updated_lines)
+end, { range = true })
 
 vim.keymap.set("n", "<leader>k", "<cmd>CommentToggle<CR>")
 vim.keymap.set("v", "<leader>k", ":<C-U>CommentToggle<CR>")
