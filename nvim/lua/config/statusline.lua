@@ -1,8 +1,9 @@
 local function diagnostics_segment()
   local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
   local warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+  local hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
 
-  return string.format("E:%d W:%d", errors, warnings)
+  return string.format("%%#DiagnosticError#E%%*:%d %%#DiagnosticWarn#W%%*:%d %%#DiagnosticHint#H%%*:%d", errors, warnings, hints)
 end
 
 function _G.statusline_diagnostics()
