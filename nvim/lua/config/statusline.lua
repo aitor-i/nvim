@@ -13,7 +13,7 @@ end
 vim.opt.statusline = table.concat({
   " %<%F",
   " %=",
-  " %{v:lua.statusline_diagnostics()}",
+  " %{%v:lua.statusline_diagnostics()%}",
   "  Ln %l, Col %c",
   "  %p%% ",
 })
