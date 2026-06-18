@@ -70,6 +70,8 @@ local plugins = {
 					"javascript",
 					"json",
 					"lua",
+					"markdown",
+					"markdown_inline",
 					"python",
 					"typescript",
 					"tsx",
@@ -83,6 +85,25 @@ local plugins = {
 				indent = { enable = true, disable = { "typescript", "tsx" } },
 			})
 		end,
+	},
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		ft = { "markdown" },
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-tree/nvim-web-devicons",
+		},
+		opts = {
+			checkbox = {
+				enabled = true,
+				unchecked = {
+					icon = "󰄱 ",
+				},
+				checked = {
+					icon = "󰱒 ",
+				},
+			},
+		},
 	},
 	{ "windwp/nvim-ts-autotag", dependencies = { "nvim-treesitter/nvim-treesitter" } },
 	{
